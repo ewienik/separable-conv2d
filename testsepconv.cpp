@@ -1,8 +1,13 @@
+#define CATCH_CONFIG_MAIN
+
+/**/
+
+#include "catch.hpp"
 #include "separableconv2d.hpp"
 
 /**/
 
-auto main() -> int {
-    separableConv2d({1, 1, 1}, {1, 1, 1}, {1, 1});
-    return 0;
-}
+TEST_CASE("Compile simple case", "[compilation") { separableConv2d({1, 1, 1}, {1, 1, 1}, {1, 1}); }
+
+/**/
+
