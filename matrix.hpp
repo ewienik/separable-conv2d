@@ -28,7 +28,7 @@ struct Matrix {
 
     /**/
 
-    int size(int dim) {
+    int size(int dim) const {
         if (dim < 0 || dim >= Rank) { return -1; }
         return dims_[dim];
     }
@@ -36,7 +36,7 @@ struct Matrix {
     /**/
 
     template <typename... Idx>
-    Type get(Idx... args) {
+    Type get(Idx... args) const {
         return data_[offset(args...)];
     }
 
@@ -50,7 +50,7 @@ struct Matrix {
     /**/
 
     template <typename... Idx>
-    Type const *begin(Idx... args) {
+    Type const *begin(Idx... args) const {
         static_assert(Rank - 1 == sizeof...(Idx), "There should be index for all - 1 dimensions");
         return &data_[offset(args..., 0)];
     }
@@ -58,7 +58,7 @@ struct Matrix {
     /**/
 
     template <typename... Idx>
-    Type const *end(Idx... args) {
+    Type const *end(Idx... args) const {
         return begin(args...) + dims_.last();
     }
 
@@ -71,7 +71,7 @@ private:
     /**/
 
     template <typename... Idx>
-    auto offset(Idx... args) {
+    auto offset(Idx... args) const {
         static_assert(Rank == sizeof...(Idx), "There should be index for all dimensions");
         auto idxs = std::array<int, Rank>{args...};
         auto offset = int{};
