@@ -21,7 +21,7 @@ struct Matrix {
         static_assert(Rank == sizeof...(Dim), "All dimensions should be constructed");
         dims_ = {args...};
         if (*std::min_element(dims_.begin(), dims_.end()) < 1) {
-            throw std::invalid_argument("All dimensions should be positive");
+            throw std::out_of_range("All dimensions should be positive");
         }
         data_.resize(std::accumulate(dims_.begin(), dims_.end(), 1, std::multiplies<int>()));
     }
@@ -78,7 +78,7 @@ private:
         for (auto id = 0; id < Rank; id++) {
             auto idx = idxs[id];
             auto size = dims_[id];
-            if (idx < 0 || idx >= size) { throw std::invalid_argument("Indexes out of scope"); }
+            if (idx < 0 || idx >= size) { throw std::out_of_range("Indexes out of scope"); }
             offset = offset * size + idx;
         }
         return offset;

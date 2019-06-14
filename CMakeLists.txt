@@ -4,6 +4,8 @@ project(separable-conv2d)
 
 add_executable(testsepconv separableconv2d.cpp testsepconv.cpp)
 
+target_link_libraries(testsepconv stdc++fs)
+
 file(GLOB TEST_DATA "testdata/*")
 string(REPLACE ";" "\n" TEST_DATA_LINES "${TEST_DATA}")
 file(WRITE ${PROJECT_BINARY_DIR}/separable-conv2d-tests.txt ${TEST_DATA_LINES})
