@@ -50,6 +50,11 @@ struct Matrix {
     /**/
 
     template <typename... Idx>
+    Type *begin(Idx... args) {
+        static_assert(Rank - 1 == sizeof...(Idx), "There should be index for all - 1 dimensions");
+        return &data_[offset(args..., 0)];
+    }
+    template <typename... Idx>
     Type const *begin(Idx... args) const {
         static_assert(Rank - 1 == sizeof...(Idx), "There should be index for all - 1 dimensions");
         return &data_[offset(args..., 0)];
@@ -58,8 +63,12 @@ struct Matrix {
     /**/
 
     template <typename... Idx>
-    Type const *end(Idx... args) const {
+    Type *end(Idx... args) {
         return begin(args...) + dims_.last();
+    }
+    template <typename... Idx>
+    Type const *end(Idx... args) const {
+        return this->begin(args...) + this->dims_.last();
     }
 
     /**/
