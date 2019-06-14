@@ -64,11 +64,11 @@ struct Matrix {
 
     template <typename... Idx>
     Type *end(Idx... args) {
-        return begin(args...) + dims_.last();
+        return begin(args...) + dims_.back();
     }
     template <typename... Idx>
     Type const *end(Idx... args) const {
-        return this->begin(args...) + this->dims_.last();
+        return this->begin(args...) + dims_.back();
     }
 
     /**/
