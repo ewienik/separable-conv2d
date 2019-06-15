@@ -64,5 +64,5 @@ with tf.Session() as sess:
     for f in range(args.features):
         for y in range(args.height):
             for x in range(args.width):
-                print("", inp[0][y][x][f], end="")
+                print("", out[0][y][x][f], end="")
     print("")
