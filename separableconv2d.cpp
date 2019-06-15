@@ -3,13 +3,8 @@
 #include <tuple>
 #include <vector>
 
-#include <iostream>
-
 /**/
 
-// using std::pair;
-using std::max;
-using std::min;
 using std::vector;
 
 /**/
@@ -50,18 +45,13 @@ auto separableConv2d(Matrix<float, 3> const &input, Matrix<float, 3> const &dwei
     auto kernelcy = kernelHeight / 2;
     auto padded = vector<float>(width + kernelWidth - 1);
 
-    std::cout << "setup: " << height << " " << width << " " << kernelHeight << " " << kernelWidth << " " << features
-              << " " << kernelcx << " " << kernelcy << " " << padded.size() << "\n";
     for (auto c = 0; c < channels; c++) {
         for (auto h = 0; h < height; h++) {
             copy(input.begin(c, h), input.end(c, h), padded.begin() + kernelcx);
-            auto kbegin = max(0, kernelcy - h);
-            auto kheight = min(kernelHeight, height - h + 1 - kernelcy);
-            std::cout << "check: " << c << " " << h << " " << kbegin << " " << kheight << "\n";
-            for (auto kh = kbegin; kh < kheight; kh++) {
+            for (auto kh = 0, outh = h + kernelcy; kh < kernelWidth; kh++, outh--) {
+                if (outh < 0 || outh >= height) { continue; }
                 for (auto f = 0; f < features; f++) {
-                    std::cout << "compose: " << kh << " " << f << "\n";
-                    compose(output.begin(f, h), &padded.front(), padded.size(), dweights.begin(c, kh), dweights.size(1),
+                    compose(output.begin(f, outh), &padded.front(), padded.size(), dweights.begin(c, kh), kernelWidth,
                             pweights.get(f, c));
                 }
             }

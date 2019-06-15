@@ -166,6 +166,7 @@ TEST_CASE("Compare outputs") {
     }
     auto id = GENERATE(range(0, static_cast<int>(files.size())));
     auto path = files[id];
+    if (path.empty()) { return; }
     DYNAMIC_SECTION("Compare #" << id << " with file " << fs::path(path).filename()) {
         REQUIRE(!path.empty());
         auto [input, dweights, pweights, expected] = readtestdata(path);
@@ -190,4 +191,3 @@ TEST_CASE("Compare outputs") {
 }
 
 /**/
-
