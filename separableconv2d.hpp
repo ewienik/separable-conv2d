@@ -7,8 +7,8 @@
 
 /**/
 
-Matrix<float, 3> separableConv2d(Matrix<float, 3> const &input, Matrix<float, 3> const &dweights,
-                                 Matrix<float, 2> const &pweights);
+auto separableConv2d(Matrix<float, 3> const &input, Matrix<float, 3> const &dweights, Matrix<float, 2> const &pweights)
+    -> Matrix<float, 3>;
 
 /**/
 

@@ -28,15 +28,15 @@ struct Matrix {
 
     /**/
 
-    int size(int dim) const {
+    [[nodiscard]] auto size(int dim) const -> int {
         if (dim < 0 || dim >= Rank) { return -1; }
-        return dims_[dim];
+        return dims_[dim]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
     /**/
 
     template <typename... Idx>
-    Type get(Idx... args) const {
+    [[nodiscard]] auto get(Idx... args) const -> Type {
         return data_[offset(args...)];
     }
 
@@ -50,12 +50,12 @@ struct Matrix {
     /**/
 
     template <typename... Idx>
-    Type *begin(Idx... args) {
+    auto begin(Idx... args) -> Type * {
         static_assert(Rank - 1 == sizeof...(Idx), "There should be index for all - 1 dimensions");
         return &data_[offset(args..., 0)];
     }
     template <typename... Idx>
-    Type const *begin(Idx... args) const {
+    [[nodiscard]] auto begin(Idx... args) const -> Type const * {
         static_assert(Rank - 1 == sizeof...(Idx), "There should be index for all - 1 dimensions");
         return &data_[offset(args..., 0)];
     }
@@ -63,11 +63,12 @@ struct Matrix {
     /**/
 
     template <typename... Idx>
-    Type *end(Idx... args) {
+    auto end(Idx... args) -> Type * {
         return begin(args...) + dims_.back();
     }
     template <typename... Idx>
-    Type const *end(Idx... args) const {
+    [[nodiscard]] auto end(Idx... args) const -> Type const * {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return this->begin(args...) + dims_.back();
     }
 
@@ -80,13 +81,13 @@ private:
     /**/
 
     template <typename... Idx>
-    auto offset(Idx... args) const {
+    [[nodiscard]] auto offset(Idx... args) const {
         static_assert(Rank == sizeof...(Idx), "There should be index for all dimensions");
         auto idxs = std::array<int, Rank>{args...};
         auto offset = int{};
         for (auto id = 0; id < Rank; id++) {
-            auto idx = idxs[id];
-            auto size = dims_[id];
+            auto idx = idxs[id];   // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+            auto size = dims_[id]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
             if (idx < 0 || idx >= size) { throw std::out_of_range("Indexes out of scope"); }
             offset = offset * size + idx;
         }
